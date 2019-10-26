@@ -4,7 +4,7 @@ from gym.utils import seeding
 import numpy as np
 
 class TetrisEnv(gym.Env):
-    metadata = {'render.modes': ['human', 'console'],
+    metadata = {'render.modes': ['human','rgb_array', 'console'],
                 'video.frames_per_second':350}
 
     def __init__(self, size=(20,10)):
@@ -58,6 +58,9 @@ class TetrisEnv(gym.Env):
         """
         if mode == 'console':
             print(self.board.blit(self.current_piece, ret=True))
+        elif mode == "rgb_array":
+            aux = self.board.blit(self.current_piece, ret=True).reshape([self.board.size[0], self.board.size[1], 1])
+            return np.concatenate([aux for i in range(3)], axis=2)
         elif mode == "human":
             try:
                 import pygame
